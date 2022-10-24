@@ -43,18 +43,6 @@ export const LoginPage = (props) => {
         })
     }
 
-    const [justifyActive, setJustifyActive] = useState('LoginPage');
-
-    const handleJustifyClick = (value) => {
-        if (value === justifyActive) {
-            return;
-        }
-        setJustifyActive(value);
-    }
-
-    const [disableLoginButton, setDisableLoginButton] = React.useState(false)
-
-
     const warn_notification = (content) => toast.warn(content, {
         position: "bottom-right",
         autoClose: 4000,
@@ -80,61 +68,34 @@ export const LoginPage = (props) => {
         <>
             <MDBContainer className="p-3 my-3 d-flex flex-column w-75">
 
-                <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
-                    <MDBTabsItem>
-                        <MDBTabsLink onClick={() => handleJustifyClick('LoginPage')}
-                                     active={justifyActive === 'LoginPage'}>
-                            Login
-                        </MDBTabsLink>
-                    </MDBTabsItem>
-                    <MDBTabsItem>
-                        <MDBTabsLink onClick={() => handleJustifyClick('RegisterPage')}
-                                     active={justifyActive === 'RegisterPage'}>
-                            Register
-                        </MDBTabsLink>
-                    </MDBTabsItem>
-                </MDBTabs>
-                <hr/>
-
                 <MDBTabsContent>
 
-                    <MDBTabsPane show={justifyActive === 'LoginPage'}>
-
                         <div className="text-center mb-3">
+                            <h2>Attendance Marking App</h2>
+                            <hr/>
                             <h3>Sign In</h3>
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">SNU Email ID</label>
+                            <label className="form-label">SNU ID</label>
                             <input type="text" value={props.userSNUID} onChange={(e) => {
                                 props.setUserSNUID(e.target.value.toLowerCase())
-                            }} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                                   placeholder={"Enter SNU ID"}/>
+                            }} className="form-control" id="exampleInputEmail1"
+                                   placeholder={"Enter Your NET ID"}/>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Password</label>
                             <input type="password" value={props.loginPassword} onChange={(e) => {
                                 props.setLoginPassword(e.target.value)
-                            }} className="form-control" placeholder={"Enter Password"}/>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                            <a href="!#">Forgot password?</a>
+                            }} className="form-control" placeholder={"Enter Your Roll Number"}/>
                         </div>
                         <div className="text-center mb-3 ">
                             <button type="submit" className="btn btn-primary my-3 w-75" onClick={loginSubmit}
-                                    disabled={disableLoginButton} onKeyPress={(e) => {
+                                    onKeyPress={(e) => {
                                 console.log(e.key)
-                                if (e.key === "Enter") {
-                                    this.setState({message: e.target.value},
-                                        () => {
-                                            alert(this.state.message);
-                                        });
-                                }
                             }}>Log in
                             </button>
                         </div>
-
-                    </MDBTabsPane>
 
 
                 </MDBTabsContent>
