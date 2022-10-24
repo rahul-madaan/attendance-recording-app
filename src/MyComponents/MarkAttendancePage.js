@@ -232,11 +232,6 @@ export const MarkAttendancePage = (props) => {
                 >Mark Attendance
                 </button>
             </div>
-            <p>Latitude: {userLatitude}</p>
-            <p>Longitude: {userLongitude}</p>
-            <p>IPv4 Address: {userIPv4}</p>
-            <p>Unique Device ID: {browserFingerprint}</p>
-
         </>
     )
 }
