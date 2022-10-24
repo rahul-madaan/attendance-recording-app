@@ -1,14 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
 import {
     MDBContainer,
-    MDBTabs,
-    MDBTabsItem,
-    MDBTabsLink,
     MDBTabsContent,
-    MDBTabsPane,
 }
     from 'mdb-react-ui-kit';
 import {toast} from "react-toastify";
@@ -23,20 +18,20 @@ export const LoginPage = (props) => {
     const loginSubmit = (e) => {
         e.preventDefault()
         axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/login", {
-            'email_ID': props.userSNUID,
+            'net_id': props.userSNUID,
             'password': props.loginPassword
         }).then((result) => {
-            if (result.data.statusCode === 0) {
+            if (result.data.status === "LOGIN_SUCCESSFUL") {
                 props.setUserSNUID(props.userSNUID)
                 localStorage.clear()
-                localStorage.setItem("user_emailID", result.data.encrypted_emailID)
-                localStorage.setItem("user_emailID_len", result.data.email_len)
-                routeChange('/select-days')
+                localStorage.setItem("user_net_id", result.data.encrypted_net_id)
+                localStorage.setItem("user_net_id_len", result.data.net_id_len)
+                routeChange('/mark-attendance')
                 success_notification("Login Successful!")
-            } else if (result.data.statusCode === 1) {
-                console.log("Passwords do not match")
+            } else if (result.data.status === 'PASSWORD_DOES_NOT_MATCH') {
+                console.log("PASSWORD_DOES_NOT_MATCH")
                 warn_notification("Password does not match!")
-            } else if (result.data.statusCode === 2) {
+            } else if (result.data.status === 'USER_NOT_REGISTERED') {
                 console.log("USER NOT REGISTERED")
                 warn_notification("User is not registered")
             }
