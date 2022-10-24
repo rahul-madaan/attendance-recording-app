@@ -232,6 +232,13 @@ export const MarkAttendancePage = (props) => {
                 >Mark Attendance
                 </button>
             </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </>
     )
 }
