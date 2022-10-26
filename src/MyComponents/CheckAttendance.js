@@ -13,6 +13,8 @@ export const CheckAttendance = (props) => {
     const [attendanceList, setAttendanceList] = useState([])
     const [initiateAttendanceDisabled, setInitiateAttendanceDisabled] = useState(true)
     const [finishAttendanceDisabled, setFinishAttendanceDisabled] = useState(true)
+    const [searchNetID, setSearchNetID] = useState("")
+    const [searchStudentDetails, setSearchStudentDetails] = useState([])
 
     let navigate = useNavigate();
     const routeChange = (path) => {
@@ -31,11 +33,10 @@ export const CheckAttendance = (props) => {
     const checkAttendanceStatus = () => {
         axios.get(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/check-attendance-status")
             .then((result) => {
-                if(result.data.status === 1){
+                if (result.data.status === 1) {
                     setFinishAttendanceDisabled(false)
                     setInitiateAttendanceDisabled(true)
-                }
-                else{
+                } else {
                     setFinishAttendanceDisabled(true)
                     setInitiateAttendanceDisabled(false)
                 }
@@ -84,11 +85,10 @@ export const CheckAttendance = (props) => {
                 localStorage.removeItem("user_net_id_len")
             } else if (result.data.loginSuccess === 1) {
                 console.log("fetched email= " + result.data.user_net_id)
-                if(result.data.user_net_id==="sonia.khetarpaul@snu.edu.in") {
+                if (result.data.user_net_id === "sonia.khetarpaul@snu.edu.in") {
                     props.setUserSNUID(result.data.user_net_id)
                     console.log("Login verified successfully")
-                }
-                else{
+                } else {
                     console.log("Not Authorized")
                     warn_notification("Not Authorized!")
                     routeChange('/login')
@@ -103,19 +103,32 @@ export const CheckAttendance = (props) => {
 
     const clickFinishAttendanceButton = (e) => {
         e.preventDefault()
-        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/set-attendance-status",{"value":"false"})
+        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/set-attendance-status", {"value": "false"})
             .then((result) => {
                 setInitiateAttendanceDisabled(false)
                 setFinishAttendanceDisabled(true)
+                success_notification("Attendance Finished!")
             })
     }
 
     const clickInitiateAttendanceButton = (e) => {
         e.preventDefault()
-        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/set-attendance-status",{"value":"true"})
+        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/set-attendance-status", {"value": "true"})
             .then((result) => {
                 setInitiateAttendanceDisabled(true)
                 setFinishAttendanceDisabled(false)
+                success_notification("Attendance Initiated!")
+            })
+    }
+
+    const clickSearchButton = (e) => {
+        e.preventDefault()
+        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/search-student", {"net_id": searchNetID})
+            .then((result) => {
+                if (result.data.status === "NET_ID_NOT_FOUND")
+                    setSearchStudentDetails([])
+                else
+                    setSearchStudentDetails(result.data)
             })
     }
 
@@ -164,8 +177,12 @@ export const CheckAttendance = (props) => {
             </div>
             <div className="container h-100 d-flex justify-content-center">
                 <div className="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" className="btn btn-success" disabled={initiateAttendanceDisabled} onClick={clickInitiateAttendanceButton}>Initiate Attendance</button>
-                    <button type="button" className="btn btn-danger" disabled={finishAttendanceDisabled} onClick={clickFinishAttendanceButton}>Finish Attendance</button>
+                    <button type="button" className="btn btn-success" disabled={initiateAttendanceDisabled}
+                            onClick={clickInitiateAttendanceButton}>Initiate Attendance
+                    </button>
+                    <button type="button" className="btn btn-danger" disabled={finishAttendanceDisabled}
+                            onClick={clickFinishAttendanceButton}>Finish Attendance
+                    </button>
                 </div>
             </div>
             <div className="container  d-flex justify-content-center">
@@ -197,6 +214,41 @@ export const CheckAttendance = (props) => {
                     </tbody>
                 </table>
             </div>
+            <br/>
+            <br/>
+            <div className="container h-100 d-flex justify-content-center">
+                <h3>Mark Attendance</h3>
+            </div>
+
+            <div className="container  d-flex justify-content-center">
+                <div className="input-group">
+                    <input type="search" className="form-control rounded" placeholder="Search Net ID" onChange={(e) => {
+                        setSearchNetID(e.target.value.toLowerCase())
+                    }}/>
+                    <button type="button" className="btn btn-outline-primary" onClick={clickSearchButton}>Search Net ID
+                    </button>
+                </div>
+            </div>
+            {searchStudentDetails.length === 0 ? null :
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <th scope="col" className="fs-5">Name</th>
+                        <th scope="col" className="fs-5">Net ID</th>
+                        <th scope="col" className="fs-5">Roll Number</th>
+                        <th scope="col" className="fs-5">Attendance</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{searchStudentDetails.first_name + " " + searchStudentDetails.last_name}</td>
+                        <td>{searchStudentDetails.net_id}</td>
+                        <td>{searchStudentDetails.roll_number}</td>
+                        <td>{searchStudentDetails.attendance}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            }
             <br/>
             <br/>
             <br/>

@@ -58,7 +58,10 @@ export const MarkAttendancePage = (props) => {
             'encrypted_net_id': localStorage.getItem("user_net_id"),
             'encrypted_net_id_len': localStorage.getItem("user_net_id_len")
         }).then((result) => {
-            console.log("lol")
+            if(result.data.user_net_id==="sonia.khetarpaul@snu.edu.in"){
+                warn_notification("Not Authorized!")
+                routeChange("/check-attendance")
+            }
             console.log(result.data.loginSuccess)
             if (result.data.loginSuccess === 0) {
                 console.log("cant verify email, login again")
