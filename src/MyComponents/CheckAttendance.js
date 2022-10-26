@@ -15,6 +15,7 @@ export const CheckAttendance = (props) => {
     const [finishAttendanceDisabled, setFinishAttendanceDisabled] = useState(true)
     const [searchNetID, setSearchNetID] = useState("")
     const [searchStudentDetails, setSearchStudentDetails] = useState([])
+    const [markPresentDisabled, setMarkPresentDisabled] = useState(true)
 
     let navigate = useNavigate();
     const routeChange = (path) => {
@@ -27,6 +28,7 @@ export const CheckAttendance = (props) => {
             .then((result) => {
                 setAttendanceList(result.data.present)
                 console.log(result.data.present.map((item, index) => console.log(item.name)))
+                success_notification("Attendance List Refreshed!")
             })
     }
 
@@ -125,10 +127,22 @@ export const CheckAttendance = (props) => {
         e.preventDefault()
         axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/search-student", {"net_id": searchNetID})
             .then((result) => {
-                if (result.data.status === "NET_ID_NOT_FOUND")
+                if (result.data.status === "NET_ID_NOT_FOUND") {
                     setSearchStudentDetails([])
-                else
+                    warn_notification("Net ID Not Found!")
+                } else {
                     setSearchStudentDetails(result.data)
+                    setMarkPresentDisabled(false)
+                }
+            })
+    }
+
+    const clickMarkPresentButton = (e) => {
+        e.preventDefault()
+        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/mark-attendance-override", {"net_id": searchNetID})
+            .then((result) => {
+                success_notification("Marked Attendance of " + searchStudentDetails.first_name + " " + searchStudentDetails.last_name)
+                setMarkPresentDisabled(true)
             })
     }
 
@@ -230,25 +244,33 @@ export const CheckAttendance = (props) => {
                 </div>
             </div>
             {searchStudentDetails.length === 0 ? null :
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col" className="fs-5">Name</th>
-                        <th scope="col" className="fs-5">Net ID</th>
-                        <th scope="col" className="fs-5">Roll Number</th>
-                        <th scope="col" className="fs-5">Attendance</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>{searchStudentDetails.first_name + " " + searchStudentDetails.last_name}</td>
-                        <td>{searchStudentDetails.net_id}</td>
-                        <td>{searchStudentDetails.roll_number}</td>
-                        <td>{searchStudentDetails.attendance}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div className="container h-100 d-flex justify-content-center">
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" className="fs-5">Name</th>
+                            <th scope="col" className="fs-5">Net ID</th>
+                            <th scope="col" className="fs-5">Roll Number</th>
+                            <th scope="col" className="fs-5">Attendance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{searchStudentDetails.first_name + " " + searchStudentDetails.last_name}</td>
+                            <td>{searchStudentDetails.net_id}</td>
+                            <td>{searchStudentDetails.roll_number}</td>
+                            <td>{searchStudentDetails.attendance}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             }
+            {searchStudentDetails.attendance === "ABSENT"
+                ? <div className="container  d-flex justify-content-center">
+                    <button type="button" className="btn btn-success" onClick={clickMarkPresentButton}
+                            disabled={markPresentDisabled}>Mark Present
+                    </button>
+                </div> : null}
             <br/>
             <br/>
             <br/>

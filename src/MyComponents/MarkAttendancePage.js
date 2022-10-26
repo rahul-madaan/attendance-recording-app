@@ -25,7 +25,6 @@ export const MarkAttendancePage = (props) => {
             // fingerprint is your unique browser id.
             console.log("Browser Fingerprint: " + fingerprint)
             setBrowserFingerprint(fingerprint)
-            success_notification("Collected Unique Device ID Successfully!")
             // the result you receive here is the combination of Canvas fingerprint and audio fingerprint.
         })
     }
@@ -96,7 +95,6 @@ export const MarkAttendancePage = (props) => {
         const res = await axios.get('https://geolocation-db.com/json/')
         console.log(res.data);
         setUserIPv4(res.data.IPv4)
-        success_notification('IP Address collected successfully')
     }
 
 
@@ -107,7 +105,6 @@ export const MarkAttendancePage = (props) => {
                 console.log("Longitude is :", position.coords.longitude);
                 setUserLatitude(position.coords.latitude)
                 setUserLongitude(position.coords.longitude)
-                success_notification("Location Collected successfully")
                 resolve()
             }, function (error) {
                 warn_notification(error)
@@ -161,6 +158,7 @@ export const MarkAttendancePage = (props) => {
         setCollectUserDetailsLoading(false)
         setCollectUserDetailsDisabled(true)
         setMarkAttendanceDisabled(false)
+        success_notification("Collected IP, Location, Unique DeviceID Successfully!")
     }
 
 
