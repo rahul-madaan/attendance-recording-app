@@ -22,11 +22,13 @@ export const LoginPage = (props) => {
             'password': props.loginPassword
         }).then((result) => {
             if (result.data.status === "LOGIN_SUCCESSFUL") {
-                props.setUserSNUID(props.userSNUID)
                 localStorage.clear()
                 localStorage.setItem("user_net_id", result.data.encrypted_net_id)
                 localStorage.setItem("user_net_id_len", result.data.net_id_len)
-                routeChange('/mark-attendance')
+                if(props.userSNUID==="sonia.khetarpaul@snu.edu.in")
+                    routeChange('/check-attendance')
+                else
+                    routeChange('/mark-attendance')
                 success_notification("Login Successful!")
             } else if (result.data.status === 'PASSWORD_DOES_NOT_MATCH') {
                 console.log("PASSWORD_DOES_NOT_MATCH")

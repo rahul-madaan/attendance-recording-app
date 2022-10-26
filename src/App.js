@@ -5,6 +5,7 @@ import {useState} from "react";
 import 'react-toastify/dist/ReactToastify.css'
 import {ToastContainer} from "react-toastify";
 import {MarkAttendancePage} from "./MyComponents/MarkAttendancePage";
+import {CheckAttendance} from "./MyComponents/CheckAttendance";
 
 
 function App() {
@@ -29,6 +30,14 @@ function App() {
                                           setUserSNUID={setUserSNUID}
                                           loginPassword={loginPassword}
                                           setLoginPassword={setLoginPassword}/></>}/>
+
+                    <Route exact path="/check-attendance"
+                           element={<>
+                               <CheckAttendance userSNUID={userSNUID}
+                                          setUserSNUID={setUserSNUID}
+                                          loginPassword={loginPassword}
+                                          setLoginPassword={setLoginPassword}/></>}/>
+
 
 
                     <Route exact path="/" element={<Navigate to="/login"/>}/>
