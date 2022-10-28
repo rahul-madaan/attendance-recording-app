@@ -7,6 +7,7 @@ import axios from "axios";
 import 'react-toastify/dist/ReactToastify.css'
 import {CheckAttendanceTableContent} from "./CheckAttendanceTableContent";
 import {toast} from "react-toastify";
+import fileDownload from 'js-file-download'
 
 export const CheckAttendance = (props) => {
 
@@ -16,6 +17,7 @@ export const CheckAttendance = (props) => {
     const [searchNetID, setSearchNetID] = useState("")
     const [searchStudentDetails, setSearchStudentDetails] = useState([])
     const [markPresentDisabled, setMarkPresentDisabled] = useState(true)
+    const [downloadAttendanceDisabled, setDownloadAttendanceDisabled] = useState(false)
 
     let navigate = useNavigate();
     const routeChange = (path) => {
@@ -147,12 +149,17 @@ export const CheckAttendance = (props) => {
     }
 
     const clickDownloadAttendanceButton = (e) => {
+        setDownloadAttendanceDisabled(true)
         e.preventDefault()
         axios.get("https://1nve0omuw1.execute-api.ap-south-1.amazonaws.com/dev/api/v1/attendance/download-attendance")
-        // axios.get(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/download-attendance")
+            // axios.get(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/download-attendance")
             .then((result) => {
-                axios.get(result.data.url)
-                success_notification("Attendance File downloaded!")
+                console.log("url fetched")
+                axios.get(result.data.url).then((res) => {
+                    setDownloadAttendanceDisabled(false)
+                    fileDownload(res.data, "attendance.txt")
+                    success_notification("Attendance File downloaded!")
+                })
             })
     }
 
@@ -284,10 +291,19 @@ export const CheckAttendance = (props) => {
             <br/>
             <br/>
             <br/>
-            <div className="container  d-flex justify-content-center">
-                <button type="button" className="btn my-3 btn-lg btn-warning" onClick={clickDownloadAttendanceButton}>Download Attendance List
-                </button>
-            </div>
+            {!downloadAttendanceDisabled ? <div className="container  d-flex justify-content-center">
+                    <button type="button" className="btn my-3 btn-lg btn-warning"
+                            onClick={clickDownloadAttendanceButton}>Download Attendance List
+                    </button>
+                </div> :
+                <div className="container  d-flex justify-content-center">
+                    <button className="btn my-3 btn-lg btn-warning" type="button" disabled>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"/>
+                        Downloading Attendance List
+                    </button>
+                </div>}
+
+
             <br/>
             <br/>
             <br/>
