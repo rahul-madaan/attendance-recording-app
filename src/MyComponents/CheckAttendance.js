@@ -146,6 +146,16 @@ export const CheckAttendance = (props) => {
             })
     }
 
+    const clickDownloadAttendanceButton = (e) => {
+        e.preventDefault()
+        axios.get("https://1nve0omuw1.execute-api.ap-south-1.amazonaws.com/dev/api/v1/attendance/download-attendance")
+        // axios.get(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/download-attendance")
+            .then((result) => {
+                axios.get(result.data.url)
+                success_notification("Attendance File downloaded!")
+            })
+    }
+
     return (<>
             <br/>
             <div className="container h-100 d-flex justify-content-center">
@@ -271,6 +281,13 @@ export const CheckAttendance = (props) => {
                             disabled={markPresentDisabled}>Mark Present
                     </button>
                 </div> : null}
+            <br/>
+            <br/>
+            <br/>
+            <div className="container  d-flex justify-content-center">
+                <button type="button" className="btn my-3 btn-lg btn-warning" onClick={clickDownloadAttendanceButton}>Download Attendance List
+                </button>
+            </div>
             <br/>
             <br/>
             <br/>
