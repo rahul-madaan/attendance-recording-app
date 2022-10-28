@@ -293,13 +293,13 @@ export const CheckAttendance = (props) => {
             <br/>
             {!downloadAttendanceDisabled ? <div className="container  d-flex justify-content-center">
                     <button type="button" className="btn my-3 btn-lg btn-warning"
-                            onClick={clickDownloadAttendanceButton}>Download Attendance List
+                            onClick={clickDownloadAttendanceButton}>Download attendance.csv File
                     </button>
                 </div> :
                 <div className="container  d-flex justify-content-center">
                     <button className="btn my-3 btn-lg btn-warning" type="button" disabled>
                         <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"/>
-                        Downloading Attendance List
+                        Downloading attendance.csv File
                     </button>
                 </div>}
 
