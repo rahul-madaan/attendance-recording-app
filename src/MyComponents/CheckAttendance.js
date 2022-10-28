@@ -157,7 +157,7 @@ export const CheckAttendance = (props) => {
                 console.log("url fetched")
                 axios.get(result.data.url).then((res) => {
                     setDownloadAttendanceDisabled(false)
-                    fileDownload(res.data, "attendance.txt")
+                    fileDownload(res.data, "attendance.csv")
                     success_notification("Attendance File downloaded!")
                 })
             })
