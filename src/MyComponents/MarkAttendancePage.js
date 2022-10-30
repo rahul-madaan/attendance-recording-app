@@ -7,7 +7,6 @@ import axios from "axios";
 import 'react-toastify/dist/ReactToastify.css'
 import {toast} from "react-toastify";
 import {getCurrentBrowserFingerPrint} from "@rajesh896/broprint.js";
-import {useRef} from "react";
 
 export const MarkAttendancePage = (props) => {
 
@@ -162,44 +161,6 @@ export const MarkAttendancePage = (props) => {
         success_notification("Collected IP, Location, Unique DeviceID Successfully!")
     }
 
-
-    const videoRef = useRef(null);
-    const photoRef = useRef(null);
-    const stripRef = useRef(null);
-
-    useEffect(() => {
-        getVideo();
-    }, [videoRef]);
-
-    const getVideo = () => {
-        navigator.mediaDevices
-            .getUserMedia({ video: { width: 300 } })
-            .then(stream => {
-                let video = videoRef.current;
-                video.srcObject = stream;
-                video.play();
-                photoRef.current = video
-            })
-            .catch(err => {
-                console.error("error:", err);
-            });
-    };
-
-
-    const takePhoto = () => {
-        let photo = photoRef.current;
-        let strip = stripRef.current;
-
-        const data = photo.toDataURL("photo.jpeg");
-
-        const link = document.createElement("a");
-        link.href = data;
-        link.setAttribute("download", "myWebcam");
-        link.innerHTML = `<img src='${data}' alt='thumbnail'/>`;
-        strip.insertBefore(link, strip.firstChild);
-    };
-
-
     return (<>
             <br/>
             <div className="container h-100 d-flex justify-content-center">
@@ -279,8 +240,6 @@ export const MarkAttendancePage = (props) => {
             <br/>
             <br/>
 
-            <button onClick={() => takePhoto()}>Take a photo</button>
-            <video ref={videoRef} />
         </>
     )
 }
