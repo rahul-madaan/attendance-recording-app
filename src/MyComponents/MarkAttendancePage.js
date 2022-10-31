@@ -55,7 +55,8 @@ export const MarkAttendancePage = (props) => {
         console.log("login verify started")
         axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/verify-login", {
             'encrypted_net_id': localStorage.getItem("user_net_id"),
-            'encrypted_net_id_len': localStorage.getItem("user_net_id_len")
+            'encrypted_net_id_len': localStorage.getItem("user_net_id_len"),
+            'auth_token': process.env.REACT_APP_API_AUTH_TOKEN
         }).then((result) => {
             if(result.data.user_net_id==="sonia.khetarpaul@snu.edu.in"){
                 warn_notification("Not Authorized!")
@@ -126,7 +127,8 @@ export const MarkAttendancePage = (props) => {
                 "IP_address": userIPv4,
                 'browser_fingerprint': browserFingerprint,
                 'latitude': userLatitude,
-                'longitude': userLongitude
+                'longitude': userLongitude,
+                'auth_token': process.env.REACT_APP_API_AUTH_TOKEN
             }).catch(error => {
             console.log(error)
             warn_notification("Error occurred, try again!")
