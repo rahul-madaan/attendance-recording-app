@@ -15,7 +15,7 @@ import {
 
 const CAPTURE_OPTIONS = {
     audio: false,
-    video: { facingMode: "user" }
+    video: { facingMode:{ exact: "user" }}
 };
 
 export function Camera({ onCapture, onClear }) {
