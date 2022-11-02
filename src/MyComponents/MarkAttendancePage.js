@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 
@@ -22,6 +22,27 @@ export const MarkAttendancePage = (props) => {
     const [collectUserDetailsDisabled, setCollectUserDetailsDisabled] = useState(true)
     const [markAttendanceDisabled, setMarkAttendanceDisabled] = useState(true)
     const [browserFingerprint, setBrowserFingerprint] = useState("")
+    const [hasPhoto, setHasPhoto] = useState(false)
+
+    const videoRef = useRef(null)
+    const photoRef = useRef(null)
+
+    const getVideo = () => {
+        navigator.mediaDevices.getUserMedia({
+            video: {width: 1920, height: 1080}
+        }).then(stream => {
+            let video= videoRef.current;
+            video.srcobject = stream;
+            video.play();
+        }).catch(err => {
+            console.error(err);
+        })
+    }
+
+    useEffect(()=>{
+        getVideo();
+    },[videoRef])
+
 
     const getBrowserFingerprint = () => {
         getCurrentBrowserFingerPrint().then((fingerprint) => {
@@ -60,7 +81,7 @@ export const MarkAttendancePage = (props) => {
             'encrypted_net_id': localStorage.getItem("user_net_id"),
             'encrypted_net_id_len': localStorage.getItem("user_net_id_len")
         }).then((result) => {
-            if(result.data.user_net_id==="sonia.khetarpaul@snu.edu.in"){
+            if (result.data.user_net_id === "sonia.khetarpaul@snu.edu.in") {
                 warn_notification("Not Authorized!")
                 routeChange("/check-attendance")
             }
@@ -134,7 +155,7 @@ export const MarkAttendancePage = (props) => {
             console.log(error)
             warn_notification("Error occurred, try again!")
         })
-        if(res.data['status'] === "ATTENDANCE_MARKED_SUCCESSFULLY")
+        if (res.data['status'] === "ATTENDANCE_MARKED_SUCCESSFULLY")
             success_notification("Attendance Marked!")
         else
             warn_notification(res.data['status'])
@@ -248,13 +269,13 @@ export const MarkAttendancePage = (props) => {
                 width: 400,
                 flexWrap: 'wrap',
             }}>
-                <div style={{ width: '100%', float: 'left' }}>
-                    <h3>How to use create button to choose file in ReactJS?</h3> <br />
+                <div style={{width: '100%', float: 'left'}}>
+                    <h3>How to use create button to choose file in ReactJS?</h3> <br/>
                 </div>
                 <input
                     type="file"
                     accept="image/*"
-                    style={{ display: 'none' }}
+                    style={{display: 'none'}}
                     id="contained-button-file"
                 />
                 <label htmlFor="contained-button-file">
@@ -262,17 +283,27 @@ export const MarkAttendancePage = (props) => {
                         Upload
                     </Button>
                 </label>
-                <h3>  OR  </h3>
+                <h3> OR </h3>
                 <input accept="image/*" id="icon-button-file"
-                       type="file" style={{ display: 'none' }} />
+                       type="file" style={{display: 'none'}}/>
                 <label htmlFor="icon-button-file">
                     <IconButton color="primary" aria-label="upload picture"
                                 component="span">
-                        <PhotoCamera />
+                        <PhotoCamera/>
                     </IconButton>
                 </label>
             </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <video ref={videoRef}></video>
+            <button>SNAP!</button>
 
+            <canvas ref={photoRef}></canvas>
+            <button>CLoSE!</button>
         </>
     )
 }
