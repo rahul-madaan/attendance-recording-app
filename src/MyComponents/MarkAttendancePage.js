@@ -1,15 +1,13 @@
 import React, {useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
-
-
+import { Fragment } from "react";
+import { Camera } from "./camera";
+import { Root, Preview, Footer, GlobalStyle } from "./Styles";
 import axios from "axios";
 import 'react-toastify/dist/ReactToastify.css'
 import {toast} from "react-toastify";
 import {getCurrentBrowserFingerPrint} from "@rajesh896/broprint.js";
-import Button from '@material-ui/core/Button';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import IconButton from '@material-ui/core/IconButton';
 
 export const MarkAttendancePage = (props) => {
 
@@ -22,26 +20,8 @@ export const MarkAttendancePage = (props) => {
     const [collectUserDetailsDisabled, setCollectUserDetailsDisabled] = useState(true)
     const [markAttendanceDisabled, setMarkAttendanceDisabled] = useState(true)
     const [browserFingerprint, setBrowserFingerprint] = useState("")
-    const [hasPhoto, setHasPhoto] = useState(false)
-
-    const videoRef = useRef(null)
-    const photoRef = useRef(null)
-
-    const getVideo = () => {
-        navigator.mediaDevices.getUserMedia({
-            video: {width: 1920, height: 1080}
-        }).then(stream => {
-            let video= videoRef.current;
-            video.srcobject = stream;
-            video.play();
-        }).catch(err => {
-            console.error(err);
-        })
-    }
-
-    useEffect(()=>{
-        getVideo();
-    },[videoRef])
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const [cardImage, setCardImage] = useState();
 
 
     const getBrowserFingerprint = () => {
@@ -265,47 +245,37 @@ export const MarkAttendancePage = (props) => {
             <br/>
             <br/>
             <br/>
-            <div style={{
-                display: 'flex',
-                margin: 'auto',
-                width: 400,
-                flexWrap: 'wrap',
-            }}>
-                <div style={{width: '100%', float: 'left'}}>
-                    <h3>How to use create button to choose file in ReactJS?</h3> <br/>
-                </div>
-                <input
-                    type="file"
-                    accept="image/*"
-                    style={{display: 'none'}}
-                    id="contained-button-file"
-                />
-                <label htmlFor="contained-button-file">
-                    <Button variant="contained" color="primary" component="span">
-                        Upload
-                    </Button>
-                </label>
-                <h3> OR </h3>
-                <input accept="image/*" id="icon-button-file"
-                       type="file" style={{display: 'none'}}/>
-                <label htmlFor="icon-button-file">
-                    <IconButton color="primary" aria-label="upload picture"
-                                component="span">
-                        <PhotoCamera/>
-                    </IconButton>
-                </label>
-            </div>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <video ref={videoRef}></video>
-            <button>SNAP!</button>
 
-            <canvas ref={photoRef}></canvas>
-            <button>CLoSE!</button>
+
+            <Fragment>
+                <Root>
+                    {isCameraOpen && (
+                        <Camera
+                            onCapture={blob => setCardImage(blob)}
+                            onClear={() => setCardImage(undefined)}
+                        />
+                    )}
+
+                    {cardImage && (
+                        <div>
+                            <h2>Preview</h2>
+                            <Preview src={cardImage && URL.createObjectURL(cardImage)} />
+                        </div>
+                    )}
+
+                    <Footer>
+                        <button onClick={() => setIsCameraOpen(true)}>Open Camera</button>
+                        <button
+                            onClick={() => {
+                                setIsCameraOpen(false);
+                                setCardImage(undefined);
+                            }}
+                        >
+                            Close Camera
+                        </button>
+                    </Footer>
+                </Root>
+            </Fragment>
         </>
     )
 }
