@@ -23,7 +23,8 @@ export const LoginPage = (props) => {
         setLoginButtonDisabled(true)
         axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/login", {
             'net_id': props.userSNUID,
-            'password': props.loginPassword
+            'password': props.loginPassword,
+            'auth_token': process.env.REACT_APP_API_AUTH_TOKEN
         }).then((result) => {
             setLoginButtonDisabled(false)
             if (result.data.status === "LOGIN_SUCCESSFUL") {

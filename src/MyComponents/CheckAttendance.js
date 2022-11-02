@@ -18,6 +18,7 @@ export const CheckAttendance = (props) => {
     const [searchStudentDetails, setSearchStudentDetails] = useState([])
     const [markPresentDisabled, setMarkPresentDisabled] = useState(true)
     const [downloadAttendanceDisabled, setDownloadAttendanceDisabled] = useState(false)
+    const [refreshListDisabled, setRefreshListDisabled] = useState(false)
 
     let navigate = useNavigate();
     const routeChange = (path) => {
@@ -26,11 +27,13 @@ export const CheckAttendance = (props) => {
 
     const clickRefreshListButton = (e) => {
         e.preventDefault()
+        setRefreshListDisabled(true)
         axios.get(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/check-attendance")
             .then((result) => {
                 setAttendanceList(result.data.present)
                 console.log(result.data.present.map((item, index) => console.log(item.name)))
                 success_notification("Attendance List Refreshed!")
+                setRefreshListDisabled(false)
             })
     }
 
@@ -78,7 +81,8 @@ export const CheckAttendance = (props) => {
         console.log("login verify started")
         axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/verify-login", {
             'encrypted_net_id': localStorage.getItem("user_net_id"),
-            'encrypted_net_id_len': localStorage.getItem("user_net_id_len")
+            'encrypted_net_id_len': localStorage.getItem("user_net_id_len"),
+            'auth_token': process.env.REACT_APP_API_AUTH_TOKEN
         }).then((result) => {
             console.log(result.data.loginSuccess)
             if (result.data.loginSuccess === 0) {
@@ -127,7 +131,7 @@ export const CheckAttendance = (props) => {
 
     const clickSearchButton = (e) => {
         e.preventDefault()
-        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/search-student", {"net_id": searchNetID})
+        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/search-student", {"net_id": searchNetID, 'auth_token': process.env.REACT_APP_API_AUTH_TOKEN})
             .then((result) => {
                 if (result.data.status === "NET_ID_NOT_FOUND") {
                     setSearchStudentDetails([])
@@ -141,7 +145,7 @@ export const CheckAttendance = (props) => {
 
     const clickMarkPresentButton = (e) => {
         e.preventDefault()
-        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/mark-attendance-override", {"net_id": searchNetID})
+        axios.post(process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/mark-attendance-override", {"net_id": searchNetID, 'auth_token': process.env.REACT_APP_API_AUTH_TOKEN})
             .then((result) => {
                 success_notification("Marked Attendance of " + searchStudentDetails.first_name + " " + searchStudentDetails.last_name)
                 setMarkPresentDisabled(true)
@@ -221,9 +225,13 @@ export const CheckAttendance = (props) => {
             </div>
 
             <div className="container  d-flex justify-content-center">
-                <button type="button" className="btn btn-warning btn my-3 mx-3" onClick={clickRefreshListButton}>REFRESH
+                {refreshListDisabled?<button className="btn btn-warning btn my-3 mx-3" type="button" disabled>
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"/>
+                    REFRESHING...
+                </button>:
+                    <button type="button" className="btn btn-warning btn my-3 mx-3" onClick={clickRefreshListButton}>REFRESH
                     LIST
-                </button>
+                </button>}
             </div>
 
             <div className="container h-100 d-flex justify-content-center">
