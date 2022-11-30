@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import { Fragment } from "react";
 import { Camera } from "./camera";
+import url from "./camera"
 import { Root, Preview, Footer, GlobalStyle } from "./Styles";
 import axios from "axios";
 import 'react-toastify/dist/ReactToastify.css'
@@ -22,6 +23,26 @@ export const MarkAttendancePage = (props) => {
     const [browserFingerprint, setBrowserFingerprint] = useState("")
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [cardImage, setCardImage] = useState();
+
+    const UploadButtonClick = async(e) => {
+        e.preventDefault()
+        const formData = new FormData();
+        formData.append("file", cardImage);
+        console.log(formData)
+        try {
+            const response = await axios({
+                method: "post",
+                url: process.env.REACT_APP_API_URI + process.env.REACT_APP_API_VERSION + "/file",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            console.log(formData)
+            console.log(response)
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
 
 
     const getBrowserFingerprint = () => {
@@ -245,7 +266,7 @@ export const MarkAttendancePage = (props) => {
             <br/>
             <br/>
             <br/>
-
+            <button type="button" className="btn btn-success btn-lg my-3 mx-3" onClick={UploadButtonClick}>UPLOAD</button>
 
             <Fragment>
                 <Root>
@@ -263,6 +284,7 @@ export const MarkAttendancePage = (props) => {
                         </div>
                     )}
 
+
                     <Footer>
                         <button onClick={() => setIsCameraOpen(true)}>Open Camera</button>
                         <button
@@ -276,6 +298,7 @@ export const MarkAttendancePage = (props) => {
                     </Footer>
                 </Root>
             </Fragment>
+            <p>{console.log(cardImage)}</p>
         </>
     )
 }

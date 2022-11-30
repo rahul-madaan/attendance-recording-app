@@ -69,6 +69,19 @@ export function Camera({ onCapture, onClear }) {
         );
 
         canvasRef.current.toBlob(blob => onCapture(blob), "image/jpeg", 1);
+        canvasRef.current.toBlob(
+            blob => {
+                const anchor = document.createElement('a');
+                anchor.download = 'my-file-name.jpg'; // optional, but you can give the file a name
+                anchor.href = URL.createObjectURL(blob);
+
+                anchor.click(); // ✨ magic!
+
+                URL.revokeObjectURL(anchor.href); // remove it from memory and save on memory! 😎
+            },
+            'image/jpeg',
+            1,
+        );
         setIsCanvasEmpty(false);
         setIsFlashing(true);
     }
@@ -112,6 +125,7 @@ export function Camera({ onCapture, onClear }) {
                         <Overlay hidden={!isVideoPlaying} />
 
                         <Canvas
+                            id='image-canvas'
                             ref={canvasRef}
                             width={container.width}
                             height={container.height}
