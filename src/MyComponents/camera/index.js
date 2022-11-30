@@ -75,7 +75,7 @@ export function Camera({ onCapture, onClear }) {
                 anchor.download = 'my-file-name.jpg'; // optional, but you can give the file a name
                 anchor.href = URL.createObjectURL(blob);
 
-                anchor.click(); // ✨ magic!
+                // anchor.click(); // ✨ magic!
 
                 URL.revokeObjectURL(anchor.href); // remove it from memory and save on memory! 😎
             },

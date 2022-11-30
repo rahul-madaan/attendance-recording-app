@@ -18,29 +18,14 @@ function App() {
         <>
             <Router>
                 <Routes>
-                    <Route exact path="/login"
-                           element={<>
-                               <LoginPage userSNUID={userSNUID}
-                                          setUserSNUID={setUserSNUID}
-                                          loginPassword={loginPassword}
-                                          setLoginPassword={setLoginPassword}/></>}/>
-                    <Route exact path="/mark-attendance"
+
+                    <Route exact path="/"
                            element={<>
                                <MarkAttendancePage userSNUID={userSNUID}
                                           setUserSNUID={setUserSNUID}
                                           loginPassword={loginPassword}
                                           setLoginPassword={setLoginPassword}/></>}/>
 
-                    <Route exact path="/check-attendance"
-                           element={<>
-                               <CheckAttendance userSNUID={userSNUID}
-                                          setUserSNUID={setUserSNUID}
-                                          loginPassword={loginPassword}
-                                          setLoginPassword={setLoginPassword}/></>}/>
-
-
-
-                    <Route exact path="/" element={<Navigate to="/login"/>}/>
                 </Routes>
             </Router>
             <ToastContainer/>
