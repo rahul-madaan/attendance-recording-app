@@ -1,11 +1,20 @@
-# IDmyPhone
-ReactJS based Web Application to link all the Digital Devices with Aadhaar Number of individuals and enable transfer of devices and reporting of
-lost/stolen devices to stop trading of stolen phones and reduce crime.
+# Attendance Recording Web App
+ReactJS based Web Application to record attendance of students in a class. 
+This was develped and hosted on the request of my Professor at Shiv Nadar University.
+
+# Features:
+- Students can mark attendance for any class within a few seconds
+- A student can only mark attendance from the classroom (Requires location data)
+- Only one student can mark attendance from each unique device.
+- Professor can initiate and finish the attendance period
+- Professor can download .csv file of attendees
+- Professor can mark students' attendance if there is any technical issue with their device
 
 # Tech Stack
 - FrontEnd: ReactJS
-- BackEnd: Python FastAPI https://github.com/rahul-madaan/phone-one-server
-- Database: MySQL
+- BackEnd: Python FastAPI https://github.com/rahul-madaan/slot-booking-app-backend
+- Database: DynamoDB (NoSQL)
+- Hosting: AWS Amplify
 
 # Features
 
@@ -24,7 +33,7 @@ lost/stolen devices to stop trading of stolen phones and reduce crime.
 12. Open http://localhost:3000/ on your browser.
 
 # Database UML Diagram
-![image](https://user-images.githubusercontent.com/34760210/171046512-bfbc6818-7a1b-4e2c-b227-3241c7ca86c7.png)
+
 
 
 # User Interface
