@@ -36,6 +36,9 @@ This was develped and hosted on the request of my Professor at Shiv Nadar Univer
 ## Notifications
 <img width="1234" alt="Screenshot 2023-02-03 at 10 55 41 PM" src="https://user-images.githubusercontent.com/34760210/216667731-89cf8d74-c2b0-4510-87a7-348dbd7cb0ec.png">
 
+## Download attendance as .csv File
+<img width="1268" alt="Screenshot 2023-02-03 at 10 54 32 PM" src="https://user-images.githubusercontent.com/34760210/216829291-95e9d4c9-ecbd-433b-a0ca-8bea461ca9d2.png">
+
 
 
 
