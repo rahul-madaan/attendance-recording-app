@@ -18,6 +18,10 @@ This was develped and hosted on the request of my Professor at Shiv Nadar Univer
 
 
 # User Interface
+## Instructions for students
+<img width="1680" alt="Screenshot 2023-02-19 at 9 24 23 PM" src="https://user-images.githubusercontent.com/34760210/219959286-02cf67e9-50d2-463d-983f-cb75c437f390.png">
+
+
 ## Login Page
 <img width="1229" alt="Screenshot 2023-02-03 at 10 47 49 PM" src="https://user-images.githubusercontent.com/34760210/216666165-1b8da5e5-ced3-4561-8724-19242d679de3.png">
 
