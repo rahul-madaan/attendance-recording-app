@@ -28,11 +28,8 @@ This was develped and hosted on the request of my Professor at Shiv Nadar Univer
 ## Mark Attendance Page
 <img width="1218" alt="Screenshot 2023-02-03 at 10 48 12 PM" src="https://user-images.githubusercontent.com/34760210/216666243-bb5dd858-d4e1-49f1-b32e-4486ea7cc36c.png">
 
-## Interface for professor
+## Interface for professor - initiate/end attendance
 <img width="1269" alt="Screenshot 2023-02-03 at 10 51 19 PM" src="https://user-images.githubusercontent.com/34760210/216666877-fa551a69-c5a7-4553-97a3-3307daac3a74.png">
-
-## Feature to initiate attendance for professor
-<img width="1440" alt="Screenshot 2022-05-31 at 12 23 51 AM" src="https://user-images.githubusercontent.com/34760210/171047504-93abf4bb-d525-4fbc-b289-d8979381fa4c.png">
 
 ## Feature to check realtime attendance and mark attendance using ID of student
 <img width="1262" alt="Screenshot 2023-02-03 at 10 53 07 PM" src="https://user-images.githubusercontent.com/34760210/216667228-b9e163cf-effd-460a-a848-e2d0d8720b53.png">
